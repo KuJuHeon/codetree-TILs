@@ -4,18 +4,21 @@ using namespace std;
 
 int main() {
     // 여기에 코드를 작성해주세요.
-    int n;
-    unordered_map<int,int> m;
+    int n,m;
+    unordered_map<int,int> num;
     
-    cin>>n;
+    cin>>n>>m;
 
     for(int i=0;i<n;++i){
-        int num;
-        cin>>num;
-        m.insert({num,i+1});
+        int a;
+        cin>>a;
+        num[a]++;
     }
-    int k;
-    cin>>k;
-    cout<<m[k];
+    for(int i=0;i<m;++i){
+        int k;
+        cin>>k;
+        cout<<num[k] <<" ";
+    }
+    
     return 0;
 }
