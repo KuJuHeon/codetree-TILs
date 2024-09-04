@@ -3,6 +3,8 @@
 using namespace std;
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
     // 여기에 코드를 작성해주세요.
     int n,m;
     unordered_map<int,int> num;
