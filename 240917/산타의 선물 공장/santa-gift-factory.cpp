@@ -69,8 +69,7 @@ int q_200() {
             BOX candi = *iter;  
             belt[i].B.push_back(candi);
             box_map[iter->idx] = --belt[i].B.end();
-            belt[i].B.erase(iter);
-            
+            belt[i].B.erase(iter);        
         }
         
     }
@@ -115,13 +114,19 @@ int q_400() {
     int idx = iter->belt;
     //근데 원래 맨 앞에 있던 상자면 아래를 할 필요가 없다.
     if (iter != belt[idx].B.begin()) {
-        //그 위치부터 끝까지 반복문
-        for (iter = box_map[id]; iter != belt[idx].B.end();) {
+        //그 위치부터 끝까지 반복문->목표는 맨 뒤에서부터 그 위치까지 하나씩 앞으로 땡긴다.
+        //이때 for문을 이용하기 위해서 그 위치 한 칸 앞에 있는 애가 되기 전까지 반복문을 돌린다.
+        list<BOX>::iterator target = box_map[id];
+        --target;
+        for (iter = --belt[idx].B.end(); iter != target;) {
             BOX candi = *iter;
-            list<BOX>::iterator candi_iter = ++belt[idx].B.begin();
-            belt[idx].B.insert(candi_iter, candi);
+            //앞에서부터 집어넣고
+            belt[idx].B.push_front(candi);
+            //해시 다시 조정해주고
+            box_map[candi.idx] = belt[idx].B.begin();
             //앞에다가 추가했으면 뒤에 있던 건 지워주자
-            iter = belt[idx].B.erase(iter);
+            belt[idx].B.erase(iter);
+            iter = --belt[idx].B.end();
         }
     }
     return idx + 1;
