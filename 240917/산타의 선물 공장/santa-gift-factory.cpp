@@ -20,6 +20,15 @@ unordered_map<int, list<BOX>::iterator> box_map;
 bool is_belt_empty(int belt_num) {
     return (belt[belt_num].B.begin() == belt[belt_num].B.end());
 }
+void show() {
+    for (int i = 0; i < m; ++i) {
+        cout << i + 1 << "벨트 ";
+        for (list<BOX>::iterator iter = belt[i].B.begin(); iter != belt[i].B.end(); ++iter) {
+            cout << iter->idx << " ";
+        }
+        cout << "\n";
+    }
+}
 void q_100() {
     //박스 갯수, 벨트 갯수 입력 받기
     cin >> n >> m;
@@ -106,18 +115,24 @@ int q_400() {
     int id;
     cin >> id;
     //없으면 -1 리턴
+    //cout << 999990 << "\n";
     if (box_map.find(id) == box_map.end()) {
         return -1;
     }
     //이 위치부터 끝까지를 앞으로 가져오자
+    //cout << 999991 << "\n";
     list<BOX>::iterator iter = box_map[id];
     int idx = iter->belt;
+    //cout << "이 박스의 벨트 번호 " << idx + 1 << "\n";
     //근데 원래 맨 앞에 있던 상자면 아래를 할 필요가 없다.
+    //cout << 999992 << "\n";
     if (iter != belt[idx].B.begin()) {
+        //cout << 999994 << "\n";
         //그 위치부터 끝까지 반복문->목표는 맨 뒤에서부터 그 위치까지 하나씩 앞으로 땡긴다.
         //이때 for문을 이용하기 위해서 그 위치 한 칸 앞에 있는 애가 되기 전까지 반복문을 돌린다.
-        list<BOX>::iterator target = box_map[id];
+        list<BOX>::iterator target = iter;
         --target;
+        //cout << 999993 << "\n";
         for (iter = --belt[idx].B.end(); iter != target;) {
             BOX candi = *iter;
             //앞에서부터 집어넣고
@@ -129,6 +144,7 @@ int q_400() {
             iter = --belt[idx].B.end();
         }
     }
+    //cout << 999999 << "\n";
     return idx + 1;
 }
 int q_500() {
@@ -150,12 +166,15 @@ int q_500() {
         //여기서부터 target은 안고장난 벨트의 idx임
         list<BOX>::iterator iter;
         for (iter = belt[belt_num].B.begin(); iter != belt[belt_num].B.end(); ) {
+            iter->belt = target;
             //타겟 벨트에 원소 하나 넣고
             belt[target].B.push_back(*iter);
+            //이제 이 박스는 target 벨트로 옮겨진다.           
+            //cout << "옮겨갈 벨트 번호 " << target + 1 << "\n";
             //그 원소 id뭔지 알아내고
             int idx = iter->idx;
-            //해시에서 지워주고
-            box_map.erase(idx);
+            //해시에 위치 새롭게 갱신
+            box_map[idx] = --belt[target].B.end();
             //그 벨트에서도 그냥 지워주자
             iter = belt[belt_num].B.erase(iter);        
         }
@@ -172,18 +191,23 @@ int main() {
         switch (cmd) {
         case 100:
             q_100();
+            //show();
             break;
         case 200:
             cout << q_200() << "\n";
+            //show();
             break;
         case 300:
             cout << q_300() << "\n";
+            //show();
             break;
         case 400:
             cout << q_400() << "\n";
+            //show();
             break;
         case 500:
             cout << q_500() << "\n";
+            //show();
             break;
         }
     }
