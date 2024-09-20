@@ -156,7 +156,7 @@ int q_500() {
         }
 
         belt[target].B.splice(belt[target].B.end(), belt[belt_num].B);
-        belt[belt_num].B.erase(belt[belt_num].B.begin(), belt[belt_num].B.end());
+        //belt[belt_num].B.erase(belt[belt_num].B.begin(), belt[belt_num].B.end());
 
     }
     return belt_num + 1;
