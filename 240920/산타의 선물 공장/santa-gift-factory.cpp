@@ -54,7 +54,7 @@ void q_100() {
     }
 }
 int q_200() {
-    int ret = 0;
+    long long ret = 0;
     int w;
     cin >> w;
     //벨트 앞부분 상자 무게 확인
