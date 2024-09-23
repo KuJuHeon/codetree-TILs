@@ -64,7 +64,7 @@ void q_100() {
         push_back(belt_num, &box[i]);
     }
 }
-//src의 모든 상자를 dst의 맨 앞으로 옮기는 함수
+//src의 상자 from부터 to까지 count개를 dst의 맨 앞으로 옮기는 함수
 void move(int dst, int src, BOX* from, BOX* to, int count) {
     BOX* fprev = from->prev;
     BOX* tnext = to->next;
@@ -86,6 +86,12 @@ void move(int dst, int src, BOX* from, BOX* to, int count) {
 
     belt[dst].count += count;
     belt[src].count -= count;
+
+    //벨트 번호 옮기자
+    int belt_num = from->belt;
+    for (BOX* it = from; it != to->next; it = it->next) {
+        it->belt = dst;
+    }
 }
 int q_200() {
     int src, dst;
