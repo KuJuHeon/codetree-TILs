@@ -86,12 +86,6 @@ void move(int dst, int src, BOX* from, BOX* to, int count) {
 
     belt[dst].count += count;
     belt[src].count -= count;
-
-    //벨트 번호 옮기자
-    int belt_num = from->belt;
-    for (BOX* it = from; it != to->next; it = it->next) {
-        it->belt = dst;
-    }
 }
 int q_200() {
     int src, dst;
@@ -158,8 +152,9 @@ int q_500() {
     BOX* prev = item->prev;
     BOX* next = item->next;
 
-    int a = (prev->belt == -1) ? (-1) : (prev->idx + 1);
-    int b = (next->belt == -1) ? (-1) : (next->idx + 1);
+    //해딩 선물이 맨 앞이나 맨 뒤이면 -1해야함
+    int a = (prev->prev == NULL) ? (-1) : (prev->idx + 1);
+    int b = (next->next == NULL) ? (-1) : (next->idx + 1);
 
     return (a + (2 * b));
     
@@ -172,8 +167,8 @@ int q_600() {
     BOX* begin = belt[belt_num].head->next;
     BOX* end = belt[belt_num].tail->prev;
 
-    int a = (begin->belt == -1) ? -1 : begin->idx + 1;
-    int b = (end->belt == -1) ? -1 : end->idx + 1;
+    int a = (empty(belt_num)) ? -1 : begin->idx + 1;
+    int b = (empty(belt_num)) ? -1 : end->idx + 1;
     int c = belt[belt_num].count;
     return (a + (2 * b) + (3 * c));
 }
