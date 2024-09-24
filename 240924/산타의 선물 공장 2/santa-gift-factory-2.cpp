@@ -8,7 +8,6 @@ struct BOX {
     BOX* next;
 
     BOX() {
-        belt = -1;
         prev = NULL;
         next = NULL;
     }
