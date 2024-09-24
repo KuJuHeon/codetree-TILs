@@ -3,7 +3,6 @@
 #include <unordered_map>
 using namespace std;
 struct BOX {
-    int belt;
     int idx;
     BOX* prev;
     BOX* next;
@@ -60,7 +59,6 @@ void q_100() {
         --belt_num;
 
         box[i].idx = i;
-        box[i].belt = belt_num;
         push_back(belt_num, &box[i]);
     }
 }
@@ -86,12 +84,6 @@ void move(int dst, int src, BOX* from, BOX* to, int count) {
 
     belt[dst].count += count;
     belt[src].count -= count;
-
-    //벨트 번호 옮기자
-    int belt_num = from->belt;
-    for (BOX* it = from; it != to->next; it = it->next) {
-        it->belt = dst;
-    }
 }
 int q_200() {
     int src, dst;
