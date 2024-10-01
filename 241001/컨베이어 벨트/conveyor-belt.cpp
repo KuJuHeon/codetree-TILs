@@ -16,9 +16,11 @@ int main() {
     int move_x = t % n;
     for (int y = 0; y < 2; ++y) {
         for (int x = 0; x < n; ++x) {
-            int move_y = ((x + t) / n) % 2;
-            int ny = (y + move_y + 2) % 2;
+            int move_y = t / n;
             int nx = (x + move_x + n) % n;
+            move_y += (x + move_x) / n;
+            int ny = (y + move_y + 2) % 2;
+            
             candi[ny][nx] = matrix[y][x];
         }
     }
