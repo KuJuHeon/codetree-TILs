@@ -4,25 +4,29 @@ using namespace std;
 int n;
 int r, c, m1, m2, m3, m4, dir;
 int matrix[100][100];
-void four(int y, int x, int cnt) {
-    if (cnt == m2) return;
+void four(int y, int x, int cnt, int d) {
+    if (d == 0 && cnt == m2) return;
+    if (d == 1 && cnt == m2) return;
     matrix[y + 1][x + 1] = matrix[y][x];
-    four(y - 1, x - 1, cnt + 1);
+    four(y - 1, x - 1, cnt + 1, d);
 }
-void three(int y, int x, int cnt) {
-    if (cnt == m1) return;
+void three(int y, int x, int cnt , int d) {
+    if (d == 0 && cnt == m1) return;
+    if (d == 1 && cnt == m1) return;
     matrix[y + 1][x - 1] = matrix[y][x];
-    three(y - 1, x + 1, cnt + 1);
+    three(y - 1, x + 1, cnt + 1, d);
 }
-void two(int y, int x, int cnt) {
-    if (cnt == m2) return;
+void two(int y, int x, int cnt, int d) {
+    if (d == 0 && cnt == m2) return;
+    if (d == 1 && cnt == m2 - 1) return;
     matrix[y - 1][x - 1] = matrix[y][x];
-    two(y + 1, x + 1, cnt + 1);
+    two(y + 1, x + 1, cnt + 1, d);
 }
-void one(int y, int x, int cnt) {
-    if (cnt == m1 - 1) return;
+void one(int y, int x, int cnt, int d) {
+    if (d == 0 && cnt == m1 - 1) return;
+    if (d == 1 && cnt == m1) return;
     matrix[y - 1][x + 1] = matrix[y][x];
-    one(y + 1, x - 1, cnt + 1);
+    one(y + 1, x - 1, cnt + 1, d);
 }
 int main() {
     ios::sync_with_stdio(false);
@@ -44,16 +48,16 @@ int main() {
         int y, x;
 
         y = r, x = c;
-        four(y - 1, x - 1, 0);
+        four(y - 1, x - 1, 0, 0);
 
         y = r - m2, x = c - m2;
-        three(y - 1, x + 1, 0);
+        three(y - 1, x + 1, 0, 0);
 
         y = r - m2 - m1, x = c - m2 + m1;
-        two(y + 1, x + 1, 0);
+        two(y + 1, x + 1, 0, 0);
 
         y = r - m1, x = c + m1;
-        one(y + 1, x - 1, 0);
+        one(y + 1, x - 1, 0, 0);
 
         matrix[r - 1][c + 1] = temp;
     }
@@ -63,16 +67,17 @@ int main() {
         int y, x;
 
         y = r, x = c;
-        three(y - 1, x + 1, 0);
+        three(y - 1, x + 1, 0, 1);
 
         y = r - m1, x = c + m1;
-        four(y - 1, x - 1, 0);
+        four(y - 1, x - 1, 0, 1);
 
         y = r - m2 - m1, x = c - m2 + m1;
-        one(y + 1, x - 1, 0);
+        one(y + 1, x - 1, 0, 1);
 
         y = r - m2, x = c - m2;
-        two(y + 1, x + 1, 0);
+        two(y + 1, x + 1, 0, 1);
+
         matrix[r - 1][c - 1] = temp;
     }
 
