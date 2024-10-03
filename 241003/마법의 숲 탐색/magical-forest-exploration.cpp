@@ -1,18 +1,19 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <iomanip>
 #include <queue>
 #include <cstring>
 using namespace std;
-int matrix[73][73];
-bool visited[73][73];
+int matrix[73][70];
+bool visited[73][70];
 int r, c, k;
 int dy[5] = { -1,0,1,0,0 };
 int dx[5] = { 0,1,0,-1,0 };
-void show(int matrix[73][73]) {
+void show(int matrix[73][70]) {
     cout << "================\n";
     for (int y = 3; y < r; ++y) {
         for (int x = 0; x < c; ++x) {
-            cout << matrix[y][x] << " ";
+            cout << setw(2) << matrix[y][x] << " ";
         }
         cout << "\n";
     }
@@ -152,7 +153,7 @@ int bfs(int num) {
         int cx = q.front().second;
         int cnum = matrix[cy][cx];
         bool check = is_exit(cy, cx, cnum);
-        //cout << "현제 좌표 " << cy << " " << cx << "\n";
+        //cout << "현재 좌표 " << cy << " " << cx <<  "에서 값 " << cnum << "\n";
         q.pop();
         //가장 아래로 간 행 고르기
         if (cy > MAX_Y) {
@@ -166,17 +167,23 @@ int bfs(int num) {
         for (int i = 0; i < 4; ++i) {
             int ny = cy + dy[i];
             int nx = cx + dx[i];
-            if (ny < 0 || ny >= r || nx < 0 || nx >= c) continue;
-            if (visited[ny][nx] || matrix[y][nx] == 0) continue;
+            if (ny < 0 || ny >= r || nx < 0 || nx >= c) {
+                //cout << "다음 좌표 " << ny << " " << nx << " 는 경계 넘어가서 탈락\n";
+                continue;
+            }
+            if (visited[ny][nx] || matrix[ny][nx] == 0) {
+                //cout << "다음 좌표 " << ny << " " << nx << " 는 이미 방문했거나, 빈칸이라 탈락\n";
+                continue;
+            }
             //현재 내 위치가 출구면 주변 담을 수 있는 거 다 담아
             if (!visited[ny][nx] && check && matrix[ny][nx] != 0) {
-                //cout << "출구라서 주변애들 담아" << ny << "\n";
+                //cout << "출구라서 주변애들 담아" << ny << " " << nx << "\n";
                 visited[ny][nx] = true;
                 q.push({ ny,nx });
             }
             //내가 출구가 아니면 같은 애들만 담아
             else if (!visited[ny][nx] && !check && matrix[ny][nx] == cnum) {
-                //cout << "같은 애들만 담아 " << ny << "\n";
+                //cout << "같은 애들만 담아 " << ny << " " << nx << "\n";
                 visited[ny][nx] = true;
                 q.push({ ny,nx });
             }
