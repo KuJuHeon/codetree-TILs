@@ -9,15 +9,6 @@ bool visited[73][70];
 int r, c, k;
 int dy[5] = { -1,0,1,0,0 };
 int dx[5] = { 0,1,0,-1,0 };
-void show(int matrix[73][70]) {
-    cout << "================\n";
-    for (int y = 3; y < r; ++y) {
-        for (int x = 0; x < c; ++x) {
-            cout << setw(2) << matrix[y][x] << " ";
-        }
-        cout << "\n";
-    }
-}
 struct ANGEL {
     int y, x, ex;
     ANGEL() {
@@ -136,7 +127,6 @@ bool is_exit(int y, int x, int num) {
 
     //내 위치가 출구랑 같으면 true
     if (y == e_y && x == e_x) {
-        //cout << y << " " << x << "는 " << num << "의 출구다\n";
         return true;
     }
     return false;
@@ -153,14 +143,12 @@ int bfs(int num) {
         int cx = q.front().second;
         int cnum = matrix[cy][cx];
         bool check = is_exit(cy, cx, cnum);
-        //cout << "현재 좌표 " << cy << " " << cx <<  "에서 값 " << cnum << "\n";
         q.pop();
         //가장 아래로 간 행 고르기
         if (cy > MAX_Y) {
             MAX_Y = cy;
             //맨 끝에가 이미 나왔으면 더 볼 필요 없다.
             if (MAX_Y == r - 1) {
-                //cout << MAX_Y << " 이미 찾음, 탐색 끝\n";
                 break;
             }
         }
@@ -168,22 +156,18 @@ int bfs(int num) {
             int ny = cy + dy[i];
             int nx = cx + dx[i];
             if (ny < 0 || ny >= r || nx < 0 || nx >= c) {
-                //cout << "다음 좌표 " << ny << " " << nx << " 는 경계 넘어가서 탈락\n";
                 continue;
             }
             if (visited[ny][nx] || matrix[ny][nx] == 0) {
-                //cout << "다음 좌표 " << ny << " " << nx << " 는 이미 방문했거나, 빈칸이라 탈락\n";
                 continue;
             }
             //현재 내 위치가 출구면 주변 담을 수 있는 거 다 담아
             if (!visited[ny][nx] && check && matrix[ny][nx] != 0) {
-                //cout << "출구라서 주변애들 담아" << ny << " " << nx << "\n";
                 visited[ny][nx] = true;
                 q.push({ ny,nx });
             }
             //내가 출구가 아니면 같은 애들만 담아
             else if (!visited[ny][nx] && !check && matrix[ny][nx] == cnum) {
-                //cout << "같은 애들만 담아 " << ny << " " << nx << "\n";
                 visited[ny][nx] = true;
                 q.push({ ny,nx });
             }
@@ -201,7 +185,6 @@ int main() {
     //k개의 정령이 골렘 타고 내려온다.
     int ret = 0;
     for(int i = 1; i <= k; ++i) {
-        //cout << "\n-------- " << i << " ---------\n";
         int c, d;
         cin >> c >> d;
         --c;
@@ -210,15 +193,12 @@ int main() {
         //주어진 골렘 이동시키자.
         while (1) {
             if (find_south(i)) {
-                //cout << "남쪽으로 가자\n";
                 move_south(i);
             }
             else if (find_west(i)) {
-                //cout << "서쪽으로 가자\n";
                 move_west(i);
             }
             else if (find_east(i)) {
-                //cout << "동쪽으로 가자\n";
                 move_east(i);
             }
             else break;
@@ -226,24 +206,16 @@ int main() {
         //이건 
         if (angel[i].y < 4) {
             //맵 비우기
-            //cout << i << "는 못내려가서 맵 지운다\n";
-            //show(matrix);
             memset(matrix, 0, sizeof(matrix));
             memset(visited, false, sizeof(visited));
             continue;
         }
         //안넘쳤으면
         else {
-            //int ed = angel[i].ex;
-            //int e_y = angel[i].y + dy[ed];
-            //int e_x = angel[i].x + dx[ed];
-            //cout << "현재 " << i << "의 출구는 " << e_y << " " << e_x << "\n";
             //탈출 시작
             memset(visited, false, sizeof(visited));
             int val = bfs(i);
-            //cout << val - 2 << "행이 가장 아래다\n";
             ret += (val-2);
-            //show(matrix);
         }
 
     }
